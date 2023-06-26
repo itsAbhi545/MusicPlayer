@@ -1,24 +1,32 @@
 package com.example.MusicPlayer.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="song")
 public class Song {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int SongId;
+    @Id
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "increment")
+    private int songId;
     private String songName;
     private String artistName;
     private String duration;
     private String songImageUrl;
     private String songAudioUrl;
+    private String released;
+    @Column(columnDefinition = "boolean default false")
+    private boolean softDelete;
 
     public int getSongId() {
-        return SongId;
+        return songId;
     }
 
     public void setSongId(int songId) {
-        SongId = songId;
+        this.songId = songId;
     }
 
     public String getSongName() {
@@ -59,5 +67,21 @@ public class Song {
 
     public void setSongAudioUrl(String songAudioUrl) {
         this.songAudioUrl = songAudioUrl;
+    }
+
+    public String getReleased() {
+        return released;
+    }
+
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public boolean isSoftDelete() {
+        return softDelete;
+    }
+
+    public void setSoftDelete(boolean softDelete) {
+        this.softDelete = softDelete;
     }
 }
