@@ -1,6 +1,7 @@
 package com.example.MusicPlayer.service;
 
 import com.example.MusicPlayer.CustomExceptions.ApiException;
+import com.example.MusicPlayer.dto.ArtistListDto;
 import com.example.MusicPlayer.model.Authority;
 import com.example.MusicPlayer.model.UserToken;
 import com.example.MusicPlayer.model.Users;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static com.example.MusicPlayer.MusicPlayerApplication.passwordEncoder;
@@ -117,5 +119,7 @@ public class UsersService implements UserDetailsService {
        // authorities.add(new Authority("ROLE_" + userRole.getRole().getRoleName()));
         return new User(user.getEmail(),user.getPassword(),authorities);
     }
-
+    public List<ArtistListDto> getArtistList(){
+        return usersRepo.getArtistList(2);
+    }
 }

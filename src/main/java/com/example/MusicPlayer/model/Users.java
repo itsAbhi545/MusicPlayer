@@ -1,9 +1,7 @@
 package com.example.MusicPlayer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,4 +20,8 @@ public class Users {
     private String lastName;
     private boolean verified;
     private String uuid;
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "user")
+    @JsonIgnore
+    private UserRole userRole;
+    private String userImageUrl;
 }

@@ -23,8 +23,6 @@ public class UserController {
     public ApiResponse signup(@RequestBody Users user){
         return new ApiResponse("User successfully registered",usersService.register(user), HttpStatus.CREATED);
     }
-    //like -- dislike
-    //wishlist
     @PostMapping("/user/wishlist/{songId}")
     public ApiResponse userWishlist(@PathVariable Integer songId, Principal principal){
 
@@ -54,17 +52,17 @@ public class UserController {
     public ApiResponse subscribeArtist(Principal principal,@PathVariable Integer artistId){
         UserRole userRole = userRoleService.findUserRoleByUserIdAndRoleId(artistId);
         if(userRole==null) throw new ApiException(HttpStatus.valueOf(400),"Can't subscribe the user!!");
-
-        //already subscribed!!!
         int userId = Integer.parseInt(principal.getName());
         SubscribedArtist subscribedArtist = subscribedArtistService.findByUserIdAndArtistId(userId,artistId);
-        ApiResponse apiResponse = ApiResponse.builder().data(null).message("Artist already Subscribed").httpStatus(HttpStatus.ACCEPTED).build();
+        ApiResponse apiResponse = ApiResponse.builder().data(null).message("Artist Unsubscribed successfully!!").httpStatus(HttpStatus.ACCEPTED).build();
         if(subscribedArtist==null){
             Users user = usersService.getUserReferenceById(userId);
-            subscribedArtist = new SubscribedArtist().artist(userRole.getUser()).user(user);
-            subscribedArtistService.subscribeArtistWithId(subscribedArtist);
+            subscribedArtistService.subscribeArtistWithId(new SubscribedArtist().artist(userRole.getUser()).user(user));
             apiResponse.setMessage("User successfully subscribed to the artist!!");
+            return apiResponse;
         }
+        subscribedArtistService.unsubscribeArtistWithId(artistId);
         return apiResponse;
     }
+
 }
