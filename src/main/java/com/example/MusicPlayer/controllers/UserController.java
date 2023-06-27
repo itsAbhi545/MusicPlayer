@@ -1,13 +1,9 @@
-package com.example.MusicPlayer.controller;
+package com.example.MusicPlayer.controllers;
 
 import com.example.MusicPlayer.CustomExceptions.ApiException;
 import com.example.MusicPlayer.dto.ApiResponse;
-import com.example.MusicPlayer.model.Song;
-import com.example.MusicPlayer.model.UserWishlist;
-import com.example.MusicPlayer.model.Users;
-import com.example.MusicPlayer.service.SongService;
-import com.example.MusicPlayer.service.UserWishlistService;
-import com.example.MusicPlayer.service.UsersService;
+import com.example.MusicPlayer.model.*;
+import com.example.MusicPlayer.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +13,12 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class HomeController {
+public class UserController {
     private final UsersService usersService;
     private final SongService songService;
     private final UserWishlistService userWishlistService;
+    private final UserRoleService userRoleService;
+    private final SubscribedArtistService subscribedArtistService;
     @PostMapping("/create-user-account")
     public ApiResponse signup(@RequestBody Users user){
         return new ApiResponse("User successfully registered",usersService.register(user), HttpStatus.CREATED);
@@ -44,9 +42,29 @@ public class HomeController {
         }
     return new ApiResponse("Song is already there in Wishlist!!",null,HttpStatus.OK);
     }
+    //user -- artist ko subscribe kiya hoga
+
     @DeleteMapping("/user/wishlist/{wishlistId}")
     public ApiResponse removeSongFromUserWishlist(Principal principal,@PathVariable Integer wishlistId){
         userWishlistService.removeSongFromWishlist(Integer.parseInt(principal.getName()),wishlistId);
         return new ApiResponse("Song Removed from Wishlist Successfully!!",null,HttpStatus.OK);
+    }
+
+    @PostMapping("/subscribe/artist/{artistId}")
+    public ApiResponse subscribeArtist(Principal principal,@PathVariable Integer artistId){
+        UserRole userRole = userRoleService.findUserRoleByUserIdAndRoleId(artistId);
+        if(userRole==null) throw new ApiException(HttpStatus.valueOf(400),"Can't subscribe the user!!");
+
+        //already subscribed!!!
+        int userId = Integer.parseInt(principal.getName());
+        SubscribedArtist subscribedArtist = subscribedArtistService.findByUserIdAndArtistId(userId,artistId);
+        ApiResponse apiResponse = ApiResponse.builder().data(null).message("Artist already Subscribed").httpStatus(HttpStatus.ACCEPTED).build();
+        if(subscribedArtist==null){
+            Users user = usersService.getUserReferenceById(userId);
+            subscribedArtist = new SubscribedArtist().artist(userRole.getUser()).user(user);
+            subscribedArtistService.subscribeArtistWithId(subscribedArtist);
+            apiResponse.setMessage("User successfully subscribed to the artist!!");
+        }
+        return apiResponse;
     }
 }
