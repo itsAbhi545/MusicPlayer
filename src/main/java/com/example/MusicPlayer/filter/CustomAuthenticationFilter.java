@@ -1,9 +1,7 @@
 package com.example.MusicPlayer.filter;
 
-import com.example.MusicPlayer.controller.HomeController;
 import com.example.MusicPlayer.model.UserToken;
 import com.example.MusicPlayer.model.Users;
-import com.example.MusicPlayer.service.UserServiceImpl;
 import com.example.MusicPlayer.service.UsersService;
 import com.example.MusicPlayer.util.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -2,7 +2,6 @@ package com.example.MusicPlayer.config;
 
 import com.example.MusicPlayer.filter.CustomAuthenticationFilter;
 import com.example.MusicPlayer.filter.CustomAuthorizationFilter;
-import com.example.MusicPlayer.service.UserServiceImpl;
 import com.example.MusicPlayer.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

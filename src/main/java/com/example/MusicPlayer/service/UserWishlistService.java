@@ -15,7 +15,9 @@ public class UserWishlistService {
         userWishlistRepo.save(userWishlist);
     }
     public int removeSongFromWishlist(int userId,int wishlistId){
-        System.out.println("dfdnaf");
         return userWishlistRepo.removeSongFromWishlist(userId,wishlistId);
+    }
+    public UserWishlist findUserWishlistBySongIdAndUserId(long userId,int songId){
+        return userWishlistRepo.findUserWishlistBySongIdAndUserId(userId,songId);
     }
 }
