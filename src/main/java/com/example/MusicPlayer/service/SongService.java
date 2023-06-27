@@ -5,6 +5,7 @@ import com.example.MusicPlayer.repo.SongRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SongService {
@@ -18,5 +19,14 @@ public class SongService {
     }
     public void deleteSongInDb(int songId){
         songRepo.deleteSongInDb(songId,true);
+    }
+    public boolean songExistInDb(int songId){
+        return songRepo.existsById(songId);
+    }
+    public Song getSongReferenceById(int songId){
+        return songRepo.getReferenceById(songId);
+    }
+    public Optional<Song> findSongById(int songId){
+        return songRepo.findById(songId);
     }
 }

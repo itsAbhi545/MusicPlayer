@@ -3,6 +3,7 @@ package com.example.MusicPlayer.config;
 import com.example.MusicPlayer.filter.CustomAuthenticationFilter;
 import com.example.MusicPlayer.filter.CustomAuthorizationFilter;
 import com.example.MusicPlayer.service.UserServiceImpl;
+import com.example.MusicPlayer.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class SecurityConfig  {
 
     private final UserDetailsService userDetailsService;
     @Autowired
-    private final UserServiceImpl userService;
+    private final UsersService userService;
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
@@ -45,7 +46,6 @@ public class SecurityConfig  {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-
         //Filter objects
         CustomAuthenticationFilter authenticationFilter=
                 new CustomAuthenticationFilter(userService,authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)));

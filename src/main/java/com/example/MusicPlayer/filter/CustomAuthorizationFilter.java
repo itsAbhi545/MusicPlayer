@@ -3,6 +3,7 @@ package com.example.MusicPlayer.filter;
 import com.example.MusicPlayer.model.Authority;
 import com.example.MusicPlayer.model.Users;
 import com.example.MusicPlayer.service.UserServiceImpl;
+import com.example.MusicPlayer.service.UsersService;
 import com.example.MusicPlayer.util.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -23,9 +24,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private UserServiceImpl userService;
+    private UsersService userService;
 
-    public  CustomAuthorizationFilter(UserServiceImpl userService){
+    public  CustomAuthorizationFilter(UsersService userService){
         this.userService=userService;
     }
     @Override
@@ -47,7 +48,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 Collection<Authority> authorities=new ArrayList<>();
                 authorities.add(new Authority("USER"));
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
-                        new UsernamePasswordAuthenticationToken(temp.getEmail(),null,authorities);
+                        new UsernamePasswordAuthenticationToken(temp.getId(),null,authorities);
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 filterChain.doFilter(request,response);
             }

@@ -1,8 +1,10 @@
 package com.example.MusicPlayer.filter;
 
+import com.example.MusicPlayer.controller.HomeController;
 import com.example.MusicPlayer.model.UserToken;
 import com.example.MusicPlayer.model.Users;
 import com.example.MusicPlayer.service.UserServiceImpl;
+import com.example.MusicPlayer.service.UsersService;
 import com.example.MusicPlayer.util.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -27,12 +29,12 @@ import java.util.Map;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-    private UserServiceImpl userService;
+    private UsersService userService;
 
 
-    public CustomAuthenticationFilter(UserServiceImpl userService, AuthenticationManager authenticationManager) {
-        this.userService = userService;
+    public CustomAuthenticationFilter(UsersService userService,AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void successfulAuthentication
             (HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
-
+        System.out.println("\u001B[32m" + "User Authenticate Successfully!!" + "\u001B[0m");
         Users loggedInUser = userService.getUserByEmail(authResult.getName());
         String token = JwtUtils.createJwtToken(((User) authResult.getPrincipal()).getUsername());
         UserToken userToken = UserToken.builder().user(loggedInUser).token(token).build();
@@ -62,7 +64,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("token", token);
         hashMap.put("email", request.getParameter("username"));
-        hashMap.put("auth", authResult.getAuthorities().iterator().next().getAuthority());
+//        hashMap.put("auth", authResult.getAuthorities().iterator().next().getAuthority());
 //        BeanUtils.copyProperties(hashMap, response.getOutputStream());
         new ObjectMapper().writeValue(response.getOutputStream(), hashMap);
     }
