@@ -14,4 +14,6 @@ public interface SongRepo extends JpaRepository<Song,Integer> {
     @Transactional @Modifying
     @Query("update Song song set song.softDelete = ?2 where song.songId = ?1")
     void deleteSongInDb(int songId,boolean flag);
+    @Query("Select song.songName from Song song where song.artist.id = ?1")
+    List<String> getSongByArtistId(long artistId);
 }

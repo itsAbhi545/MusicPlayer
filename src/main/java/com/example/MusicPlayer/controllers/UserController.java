@@ -64,5 +64,4 @@ public class UserController {
         subscribedArtistService.unsubscribeArtistWithId(artistId);
         return apiResponse;
     }
-
 }

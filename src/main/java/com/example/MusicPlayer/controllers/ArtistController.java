@@ -37,4 +37,8 @@ public class ArtistController {
         songService.deleteSongInDb(songId);
         return "Song Deleted Successfully!!!";
     }
+    @GetMapping("/music/artist/{artistId}")
+    public List<String> getMusicOfArtistWithId(@PathVariable Long artistId){
+        return songService.getSongByArtistId(artistId);
+    }
 }

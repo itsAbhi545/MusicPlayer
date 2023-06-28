@@ -13,7 +13,9 @@ public class Song {
     @GenericGenerator(name = "generator", strategy = "increment")
     private int songId;
     private String songName;
-    private String artistName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id")
+    private Users artist;
     private String duration;
     private String songImageUrl;
     private String songAudioUrl;
@@ -37,12 +39,12 @@ public class Song {
         this.songName = songName;
     }
 
-    public String getArtistName() {
-        return artistName;
+    public Users getArtist() {
+        return artist;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
+    public void setArtist(Users artist) {
+        this.artist = artist;
     }
 
     public String getDuration() {
