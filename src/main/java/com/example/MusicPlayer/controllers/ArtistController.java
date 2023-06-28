@@ -1,12 +1,14 @@
 package com.example.MusicPlayer.controllers;
 
 import com.example.MusicPlayer.dto.ArtistListDto;
+import com.example.MusicPlayer.dto.SongDto;
 import com.example.MusicPlayer.model.Song;
 import com.example.MusicPlayer.service.SongService;
 import com.example.MusicPlayer.service.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,11 @@ public class ArtistController {
     public List<ArtistListDto> getArtistList(){
         return usersService.getArtistList();
     }
+    @GetMapping("subscribed-artist/list")
+    public List<ArtistListDto> subscribeArtistList(Principal principal){
+        long userId = Long.parseLong(principal.getName());
+        return null;
+    }
     @DeleteMapping("/delete/music/{songId}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteSongByArtistOrAdmin(@PathVariable Integer songId){
@@ -40,5 +47,9 @@ public class ArtistController {
     @GetMapping("/music/artist/{artistId}")
     public List<String> getMusicOfArtistWithId(@PathVariable Long artistId){
         return songService.getSongByArtistId(artistId);
+    }
+    @GetMapping("/music/{musicId}")
+    public SongDto getMusicByMusicId(@PathVariable Integer musicId){
+       return songService.getSongBySongId(musicId);
     }
 }

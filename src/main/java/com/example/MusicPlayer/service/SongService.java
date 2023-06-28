@@ -1,5 +1,6 @@
 package com.example.MusicPlayer.service;
 
+import com.example.MusicPlayer.dto.SongDto;
 import com.example.MusicPlayer.model.Song;
 import com.example.MusicPlayer.repo.SongRepo;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,8 @@ public class SongService {
     }
     public List<String> getSongByArtistId(long artistId){
         return songRepo.getSongByArtistId(artistId);
+    }
+    public SongDto getSongBySongId(int songId){
+        return songRepo.getSongBySongId(songId);
     }
 }
