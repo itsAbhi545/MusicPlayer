@@ -2,7 +2,9 @@ package com.example.MusicPlayer.controllers;
 
 import com.example.MusicPlayer.dto.ArtistListDto;
 import com.example.MusicPlayer.dto.SongDto;
+import com.example.MusicPlayer.model.ArtistStats;
 import com.example.MusicPlayer.model.Song;
+import com.example.MusicPlayer.service.ArtistStatsService;
 import com.example.MusicPlayer.service.SongService;
 import com.example.MusicPlayer.service.UsersService;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ import java.util.List;
 public class ArtistController {
     private final SongService songService;
     private final UsersService usersService;
+    private final ArtistStatsService artistStatsService;
 
-    public ArtistController(SongService songService, UsersService usersService) {
+    public ArtistController(SongService songService, UsersService usersService, ArtistStatsService artistStatsService) {
         this.songService = songService;
         this.usersService = usersService;
+        this.artistStatsService = artistStatsService;
     }
 
     @PostMapping("/upload/music")
@@ -36,7 +40,7 @@ public class ArtistController {
     @GetMapping("subscribed-artist/list")
     public List<ArtistListDto> subscribeArtistList(Principal principal){
         long userId = Long.parseLong(principal.getName());
-        return null;
+        return null;//subscribe -- artist// views -- artist
     }
     @DeleteMapping("/delete/music/{songId}")
     @ResponseStatus(HttpStatus.OK)
@@ -51,5 +55,11 @@ public class ArtistController {
     @GetMapping("/music/{musicId}")
     public SongDto getMusicByMusicId(@PathVariable Integer musicId){
        return songService.getSongBySongId(musicId);
+    }
+    @GetMapping("/artist/statistics")
+    public ArtistStats getArtistStatistics(Principal principal){
+        long userId = Long.parseLong(principal.getName());
+        artistStatsService.getArtistStatsById(userId);
+        return null;
     }
 }
