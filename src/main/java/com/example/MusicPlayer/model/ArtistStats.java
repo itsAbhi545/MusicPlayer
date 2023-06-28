@@ -1,17 +1,19 @@
 package com.example.MusicPlayer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-@Table
-@Entity(name = "artiststats")
+@Entity()
+@Table(name = "artist_stats")
 public class ArtistStats {
     @Id
     private long id;
-    private int subscribers;
-    private int uploads;
+    private long subscribers;
+    private long uploads;
     private long views;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id")
+    @JsonIgnore
     private Users artist;
 
     public long getId() {
@@ -22,19 +24,19 @@ public class ArtistStats {
         this.id = id;
     }
 
-    public int getSubscribers() {
+    public long getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(int subscribers) {
+    public void setSubscribers(long subscribers) {
         this.subscribers = subscribers;
     }
 
-    public int getUploads() {
+    public long getUploads() {
         return uploads;
     }
 
-    public void setUploads(int uploads) {
+    public void setUploads(long uploads) {
         this.uploads = uploads;
     }
 

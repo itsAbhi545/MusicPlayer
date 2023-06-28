@@ -37,7 +37,7 @@ public class ArtistController {
     public List<ArtistListDto> getArtistList(){
         return usersService.getArtistList();
     }
-    @GetMapping("subscribed-artist/list")
+    @GetMapping("/subscribed-artist/list")
     public List<ArtistListDto> subscribeArtistList(Principal principal){
         long userId = Long.parseLong(principal.getName());
         return null;//subscribe -- artist// views -- artist
@@ -59,7 +59,6 @@ public class ArtistController {
     @GetMapping("/artist/statistics")
     public ArtistStats getArtistStatistics(Principal principal){
         long userId = Long.parseLong(principal.getName());
-        artistStatsService.getArtistStatsById(userId);
-        return null;
+        return artistStatsService.getArtistStatsById(userId);
     }
 }

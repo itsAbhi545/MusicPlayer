@@ -19,6 +19,7 @@ public class UserController {
     private final UserWishlistService userWishlistService;
     private final UserRoleService userRoleService;
     private final SubscribedArtistService subscribedArtistService;
+    private final ArtistStatsService artistStatsService;
     @PostMapping("/create-user-account")
     public ApiResponse signup(@RequestBody Users user){
         return new ApiResponse("User successfully registered",usersService.register(user), HttpStatus.CREATED);
@@ -57,10 +58,12 @@ public class UserController {
         ApiResponse apiResponse = ApiResponse.builder().data(null).message("Artist Unsubscribed successfully!!").httpStatus(HttpStatus.ACCEPTED).build();
         if(subscribedArtist==null){
             Users user = usersService.getUserReferenceById(userId);
+            artistStatsService.updateArtistSubscribersInArtistStats(artistId,1);
             subscribedArtistService.subscribeArtistWithId(new SubscribedArtist().artist(userRole.getUser()).user(user));
             apiResponse.setMessage("User successfully subscribed to the artist!!");
             return apiResponse;
         }
+        artistStatsService.updateArtistSubscribersInArtistStats(artistId,-1);
         subscribedArtistService.unsubscribeArtistWithId(artistId);
         return apiResponse;
     }

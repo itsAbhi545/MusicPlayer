@@ -14,4 +14,7 @@ public class ArtistStatsService {
     public ArtistStats getArtistStatsById(long artistId){
         return artistStatsRepo.findById(artistId).orElse(null);
     }
+    public void updateArtistSubscribersInArtistStats(long artistId,long subscribers){
+        artistStatsRepo.updateArtistSubscribersInArtistStats(subscribers,artistId);
+    }
 }
