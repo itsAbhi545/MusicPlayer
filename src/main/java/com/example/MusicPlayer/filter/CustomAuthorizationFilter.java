@@ -33,7 +33,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         System.out.println(request.getServletPath());
 
         if(request.getServletPath().contains("/user/")||request.getServletPath().contains("/subscribe/")
-        ||request.getServletPath().contains("/artist/")) {
+        ||request.getServletPath().contains("/artist/")||request.getServletPath().contains("/upload/")||
+        request.getServletPath().contains("/subscribed-artist/")) {
             String token=request.getHeader("Authorization").substring(7);
             if(token==null || userService.findUserFromToken(token)==null){
                 Map<String,String> error=new HashMap<>();
@@ -53,6 +54,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request,response);
             }
         }
+        //views table //user_id song_id
+        //likes -- dislike table
         else {
             System.out.println("savhvsfajvfsaabjnbsfa");
             filterChain.doFilter(request,response);

@@ -13,4 +13,5 @@ public interface UsersRepo extends JpaRepository<Users,Long> {
 
     @Query("Select new com.example.MusicPlayer.dto.ArtistListDto(u.id,u.firstName,u.lastName,u.userImageUrl) from Users u INNER JOIN u.userRole ur WHERE ur.role.rId = ?1")
     List<ArtistListDto> getArtistList(int roleId);
+
 }

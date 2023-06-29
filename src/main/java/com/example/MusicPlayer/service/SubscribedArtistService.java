@@ -23,5 +23,7 @@ public class SubscribedArtistService {
     public int unsubscribeArtistWithId(int artistId){
         return subscribedArtistRepo.unsubscribeArtistWithId(artistId);
     }
-
+    public List<ArtistListDto> getSubscribedArtistList(long userId){
+        return subscribedArtistRepo.getSubscribedArtistList(userId);
+    }
 }

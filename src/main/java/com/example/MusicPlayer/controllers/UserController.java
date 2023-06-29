@@ -3,6 +3,7 @@ package com.example.MusicPlayer.controllers;
 import com.example.MusicPlayer.CustomExceptions.ApiException;
 import com.example.MusicPlayer.dto.ApiResponse;
 import com.example.MusicPlayer.model.*;
+import com.example.MusicPlayer.repo.UsersRepo;
 import com.example.MusicPlayer.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,11 @@ public class UserController {
     private final UserRoleService userRoleService;
     private final SubscribedArtistService subscribedArtistService;
     private final ArtistStatsService artistStatsService;
+    private final UsersRepo usersRepo;
+    @GetMapping("/get/user")
+    public Users getUser(){
+        return usersRepo.getReferenceById(1L);
+    }
     @PostMapping("/create-user-account")
     public ApiResponse signup(@RequestBody Users user){
         return new ApiResponse("User successfully registered",usersService.register(user), HttpStatus.CREATED);

@@ -122,4 +122,5 @@ public class UsersService implements UserDetailsService {
     public List<ArtistListDto> getArtistList(){
         return usersRepo.getArtistList(2);
     }
+
 }
