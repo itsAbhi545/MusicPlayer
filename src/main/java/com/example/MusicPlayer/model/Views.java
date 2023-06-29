@@ -25,6 +25,10 @@ public class Views {
     public Song getSong() {
         return song;
     }
+    public Views song(Song song){
+        this.song = song;
+        return this;
+    }
 
     public void setSong(Song song) {
         this.song = song;
@@ -36,5 +40,9 @@ public class Views {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+    public Views user(Users user){
+        this.user = user;
+        return this;
     }
 }

@@ -4,10 +4,8 @@ import com.example.MusicPlayer.dto.ArtistListDto;
 import com.example.MusicPlayer.dto.SongDto;
 import com.example.MusicPlayer.model.ArtistStats;
 import com.example.MusicPlayer.model.Song;
-import com.example.MusicPlayer.service.ArtistStatsService;
-import com.example.MusicPlayer.service.SongService;
-import com.example.MusicPlayer.service.SubscribedArtistService;
-import com.example.MusicPlayer.service.UsersService;
+import com.example.MusicPlayer.model.Views;
+import com.example.MusicPlayer.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +19,14 @@ public class ArtistController {
     private final UsersService usersService;
     private final ArtistStatsService artistStatsService;
     private final SubscribedArtistService subscribedArtistService;
+    private final ViewsService viewsService;
 
-    public ArtistController(SongService songService, UsersService usersService, ArtistStatsService artistStatsService, SubscribedArtistService subscribedArtistService) {
+    public ArtistController(SongService songService, UsersService usersService, ArtistStatsService artistStatsService, SubscribedArtistService subscribedArtistService, ViewsService viewsService) {
         this.songService = songService;
         this.usersService = usersService;
         this.artistStatsService = artistStatsService;
         this.subscribedArtistService = subscribedArtistService;
+        this.viewsService = viewsService;
     }
 
     @PostMapping("/upload/music")
@@ -58,8 +58,18 @@ public class ArtistController {
         return songService.getSongByArtistId(artistId);
     }
     @GetMapping("/music/{musicId}")
-    public SongDto getMusicByMusicId(@PathVariable Integer musicId){
-       return songService.getSongBySongId(musicId);
+    public SongDto getMusicByMusicId(Principal principal,@PathVariable Integer musicId){
+       long userId = Long.parseLong(principal.getName());
+       SongDto song = songService.getSongBySongId(musicId);
+       int view_count = viewsService.viewExistByUserIdAndSongId(userId,musicId);
+       if(view_count==0 && song!=null){
+           //saving the view in db
+           viewsService.saveViewInDB(new Views()
+                   .song(songService.getSongReferenceById(musicId))
+                   .user(usersService.getUserReferenceById(userId)));
+           //updating the view of the song in the artist stats!!
+       }
+       return song;
     }
     @GetMapping("/artist/statistics")
     public ArtistStats getArtistStatistics(Principal principal){

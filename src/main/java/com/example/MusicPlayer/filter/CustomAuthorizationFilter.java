@@ -34,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
         if(request.getServletPath().contains("/user/")||request.getServletPath().contains("/subscribe/")
         ||request.getServletPath().contains("/artist/")||request.getServletPath().contains("/upload/")||
-        request.getServletPath().contains("/subscribed-artist/")) {
+        request.getServletPath().contains("/subscribed-artist/")||request.getServletPath().contains("/music/")) {
             String token=request.getHeader("Authorization").substring(7);
             if(token==null || userService.findUserFromToken(token)==null){
                 Map<String,String> error=new HashMap<>();

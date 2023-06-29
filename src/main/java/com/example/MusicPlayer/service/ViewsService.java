@@ -12,10 +12,10 @@ public class ViewsService {
         this.viewsRepo = viewsRepo;
     }
     //check user viewed already or not!!!
-    int viewExistByUserIdAndSongId(int userId,int songId){
+    public int viewExistByUserIdAndSongId(long userId,int songId){
         return viewsRepo.viewExistByUserIdAndSongId(userId,songId);
     }
-    Views saveViewInDB(Views songView){
+    public Views saveViewInDB(Views songView){
         return viewsRepo.save(songView);
     }
 }
