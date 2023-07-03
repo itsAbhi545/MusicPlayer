@@ -22,10 +22,10 @@ public class UserController {
     private final SubscribedArtistService subscribedArtistService;
     private final ArtistStatsService artistStatsService;
     private final UsersRepo usersRepo;
-    @GetMapping("/get/user")
-    public Users getUser(){
-        return usersRepo.getReferenceById(1L);
-    }
+//    @GetMapping("/get/user")
+//    public Users getUser(){
+//        return usersRepo.getReferenceById(1L);
+//    }
     @PostMapping("/create-user-account")
     public ApiResponse signup(@RequestBody Users user){
         return new ApiResponse("User successfully registered",usersService.register(user), HttpStatus.CREATED);

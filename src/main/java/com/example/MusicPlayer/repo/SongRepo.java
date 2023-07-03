@@ -16,6 +16,6 @@ public interface SongRepo extends JpaRepository<Song,Integer> {
     @Query("Select song.songName from Song song where song.artist.id = ?1")
     List<String> getSongByArtistId(long artistId);
     //SongDto
-    @Query("Select new com.example.MusicPlayer.dto.SongDto(song.songName,artist.firstName,artist.lastName,song.duration,song.released,song.songImageUrl,song.songAudioUrl) from Song song inner join song.artist artist where song.songId = ?1")
+    @Query("Select new com.example.MusicPlayer.dto.SongDto(song.songName,artist.firstName,artist.lastName,song.duration,song.released,song.songImageUrl,song.songAudioUrl,song.artist.id) from Song song inner join song.artist artist where song.songId = ?1")
     SongDto getSongBySongId(int songId);
 }

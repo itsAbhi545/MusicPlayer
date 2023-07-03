@@ -13,4 +13,7 @@ public interface ArtistStatsRepo extends JpaRepository<ArtistStats,Long> {
     @Transactional @Modifying
     @Query("update ArtistStats ars set ars.uploads = ars.uploads + ?1 where ars.id = ?2")
     void updateArtistUploadsInArtistStats(long uploads,long artistId);
+    @Transactional @Modifying
+    @Query("update ArtistStats ars set ars.views = ars.views + ?1 where ars.id = ?2")
+    void updateViewsInArtistStats(long views,long artistId);
 }

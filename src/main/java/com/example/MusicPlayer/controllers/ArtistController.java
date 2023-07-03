@@ -20,13 +20,15 @@ public class ArtistController {
     private final ArtistStatsService artistStatsService;
     private final SubscribedArtistService subscribedArtistService;
     private final ViewsService viewsService;
+    private final SongStatsService songStatsService;
 
-    public ArtistController(SongService songService, UsersService usersService, ArtistStatsService artistStatsService, SubscribedArtistService subscribedArtistService, ViewsService viewsService) {
+    public ArtistController(SongService songService, UsersService usersService, ArtistStatsService artistStatsService, SubscribedArtistService subscribedArtistService, ViewsService viewsService, SongStatsService songStatsService) {
         this.songService = songService;
         this.usersService = usersService;
         this.artistStatsService = artistStatsService;
         this.subscribedArtistService = subscribedArtistService;
         this.viewsService = viewsService;
+        this.songStatsService = songStatsService;
     }
 
     @PostMapping("/upload/music")
@@ -57,17 +59,21 @@ public class ArtistController {
     public List<String> getMusicOfArtistWithId(@PathVariable Long artistId){
         return songService.getSongByArtistId(artistId);
     }
+    //save the song view
     @GetMapping("/music/{musicId}")
     public SongDto getMusicByMusicId(Principal principal,@PathVariable Integer musicId){
        long userId = Long.parseLong(principal.getName());
        SongDto song = songService.getSongBySongId(musicId);
        int view_count = viewsService.viewExistByUserIdAndSongId(userId,musicId);
        if(view_count==0 && song!=null){
-           //saving the view in db
+           //saving the  view in db
            viewsService.saveViewInDB(new Views()
                    .song(songService.getSongReferenceById(musicId))
                    .user(usersService.getUserReferenceById(userId)));
+           //updating the view of the song in the song stats!!
+           songStatsService.updateViewsInSongStats(musicId);
            //updating the view of the song in the artist stats!!
+           artistStatsService.updateViewsInArtistStats(song.artistId());
        }
        return song;
     }

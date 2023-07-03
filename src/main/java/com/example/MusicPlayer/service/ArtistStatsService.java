@@ -20,4 +20,7 @@ public class ArtistStatsService {
     public void updateArtistUploadsInArtistStats(long artistId,long uploads){
         artistStatsRepo.updateArtistUploadsInArtistStats(uploads,artistId);
     }
+    public void updateViewsInArtistStats(long artistId){
+        artistStatsRepo.updateViewsInArtistStats(1L,artistId);
+    }
 }

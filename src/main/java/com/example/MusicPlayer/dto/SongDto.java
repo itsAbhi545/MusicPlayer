@@ -3,18 +3,20 @@ package com.example.MusicPlayer.dto;
 public class SongDto {
     private String songName;
     private String artistName;
+    private long artistId;
     private String duration;
     private String released;
     private String songImageUrl;
     private String songAudioUrl;
 
-    public SongDto(String songName,String firstName,String lastName, String duration, String released, String songImageUrl, String songAudioUrl) {
+    public SongDto(String songName,String firstName,String lastName, String duration, String released, String songImageUrl, String songAudioUrl,long artist) {
         this.songName = songName;
         this.artistName = firstName + " " + lastName;
         this.duration = duration;
         this.released = released;
         this.songImageUrl = songImageUrl;
         this.songAudioUrl = songAudioUrl;
+        this.artistId = artist;
     }
 
     public String getSongName() {
@@ -63,5 +65,13 @@ public class SongDto {
 
     public void setSongAudioUrl(String songAudioUrl) {
         this.songAudioUrl = songAudioUrl;
+    }
+
+    public long artistId() {
+        return artistId;
+    }
+
+    public void setArtistId(long artistId) {
+        this.artistId = artistId;
     }
 }
