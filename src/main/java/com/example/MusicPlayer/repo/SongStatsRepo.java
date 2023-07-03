@@ -10,4 +10,7 @@ public interface SongStatsRepo extends JpaRepository<SongStats,Integer> {
     @Transactional @Modifying
     @Query("update SongStats ss set ss.views = ss.views + ?1 where ss.id = ?2")
     void updateViewsInSongStats(long views,int songId);
+    @Transactional @Modifying
+    @Query("update SongStats ss set ss.likes = ss.likes + ?1,ss.dislikes = ss.dislikes + ?2 where ss.id = ?3")
+    void updateLikeAndDislikeInSongStats(long like,long dislike,int songId);
 }

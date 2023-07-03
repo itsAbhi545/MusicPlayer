@@ -21,7 +21,8 @@ public class UserController {
     private final UserRoleService userRoleService;
     private final SubscribedArtistService subscribedArtistService;
     private final ArtistStatsService artistStatsService;
-    private final UsersRepo usersRepo;
+    private final UserSongPreferenceService userSongPreferenceService;
+    private final SongStatsService songStatsService;
 //    @GetMapping("/get/user")
 //    public Users getUser(){
 //        return usersRepo.getReferenceById(1L);
@@ -71,6 +72,33 @@ public class UserController {
         }
         artistStatsService.updateArtistSubscribersInArtistStats(artistId,-1);
         subscribedArtistService.unsubscribeArtistWithId(artistId);
+        return apiResponse;
+    }
+    @PatchMapping("/user/song-preference/{songId}")
+    public ApiResponse songLikeOrDislikeByUser(Principal principal,@PathVariable Integer songId,@RequestParam int liked){
+        // user - id
+        Long userId = Long.parseLong(principal.getName());
+        //checking song exist in db
+        Song song = songService.findSongById(songId).orElse(null);
+
+        if(song==null) throw new ApiException(HttpStatus.valueOf(400),"Please Select a Valid Song!!");
+        //finding user-song-preference in db
+        UserSongPreference userSongPreference = userSongPreferenceService.findUserPreference(userId,songId);
+        if(userSongPreference==null){
+            userSongPreferenceService.saveUserSongPreference(new UserSongPreference()
+                    .user(usersService.getUserReferenceById(userId)).song(song).liked((liked==1))
+            );
+            songStatsService.updateLikeAndDislikeInSongStats(songId,(liked==1)?1:0,(liked!=1)?1:0);
+        }else{
+            boolean like = (liked==1)?true:false;
+            if(userSongPreference.isLiked()!=like) {
+                //updating the user song preference
+                userSongPreferenceService.saveUserSongPreference(userSongPreference.liked((liked == 1)));
+                songStatsService.updateLikeAndDislikeInSongStats(songId, (liked == 1) ? 1 : -1, (liked != 1) ? 1 : -1);
+            }
+        }
+        ApiResponse apiResponse =  new ApiResponse("Song Liked Successfully!!",null,HttpStatus.OK);
+        if(liked!=1) apiResponse.setMessage("Song Disliked Successfully!!");
         return apiResponse;
     }
 }

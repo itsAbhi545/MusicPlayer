@@ -13,4 +13,7 @@ public class SongStatsService {
     public void updateViewsInSongStats(int songId){
         songStatsRepo.updateViewsInSongStats(1L,songId);
     }
+    public void updateLikeAndDislikeInSongStats(int songId,long like,long dislike){
+        songStatsRepo.updateLikeAndDislikeInSongStats(like,dislike,songId);
+    }
 }
